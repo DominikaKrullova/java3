@@ -1,6 +1,6 @@
-package applicationtier.DAO.Student;
+package applicationtier.DAO.Teacher;
 
-import applicationtier.model.StudentModel;
+import applicationtier.model.TeacherModel;
 import org.springframework.stereotype.Service;
 
 import java.sql.*;
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class StudentDaoImpl implements StudentDao
+public class TeacherDaoImpl implements TeacherDao
 {
     private Connection getConnection() throws SQLException      // This method is used to connect to the database
     {
@@ -19,29 +19,29 @@ public class StudentDaoImpl implements StudentDao
     }
 
     @Override
-    public StudentModel addStudent(StudentModel studentModel)
+    public TeacherModel addTeacher(TeacherModel teacherModel)
     {
         try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement("INSERT INTO student_table(id, user_id, name, password) VALUES (?, ?, ?, ?)")) {
+             PreparedStatement statement = connection.prepareStatement("INSERT INTO teacher_table(id, user_id, name, password) VALUES (?, ?, ?, ?)")) {
 
-            statement.setString(1, studentModel.id());
-            statement.setString(2, studentModel.userId());
-            statement.setString(3, studentModel.name());
-            statement.setString(4, studentModel.password());
+            statement.setString(1, teacherModel.id());
+            statement.setString(2, teacherModel.userId());
+            statement.setString(3, teacherModel.name());
+            statement.setString(4, teacherModel.password());
 
             statement.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace(); // Handle or log the exception
         }
-        return studentModel;
+        return teacherModel;
     }
 
     @Override
-    public String deleteStudent(String id)
+    public String deleteTeacher(String id)
     {
         try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement("DELETE FROM student_table WHERE id = ?")) {
+             PreparedStatement statement = connection.prepareStatement("DELETE FROM teacher_table WHERE id = ?")) {
 
             statement.setString(1, id);
 
@@ -54,10 +54,10 @@ public class StudentDaoImpl implements StudentDao
     }
 
     @Override
-    public String editStudent(StudentModel student)
+    public String editTeacher(TeacherModel student)
     {
         try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement("UPDATE student_table SET user_id = ?, name = ?, password = ? WHERE id = ?")) {
+             PreparedStatement statement = connection.prepareStatement("UPDATE teacher_table SET user_id = ?, name = ?, password = ? WHERE id = ?")) {
 
             statement.setString(1, student.userId());
             statement.setString(2, student.name());
@@ -73,9 +73,9 @@ public class StudentDaoImpl implements StudentDao
     }
 
     @Override
-    public StudentModel getStudentById(String id) {
+    public TeacherModel getTeacherById(String id) {
         try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM student_table WHERE id = ?")) {
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM teacher_table WHERE id = ?")) {
 
             statement.setString(1, id);
 
@@ -85,7 +85,7 @@ public class StudentDaoImpl implements StudentDao
                     String name = resultSet.getString("name");
                     String password = resultSet.getString("password");
 
-                    return new StudentModel(id, userId, name, password);
+                    return new TeacherModel(id, userId, name, password);
                 }
             }
 
@@ -97,40 +97,40 @@ public class StudentDaoImpl implements StudentDao
     }
 
     @Override
-    public List<StudentModel> getAllStudents() {
-        List<StudentModel> students = new ArrayList<>();
+    public List<TeacherModel> getAllTeachers() {
+        List<TeacherModel> teachers = new ArrayList<>();
 
         try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM student_table")) {
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM teacher_table")) {
 
-            executeStudentQuery(students, statement);
+            executeTeacherQuery(teachers, statement);
 
         } catch (SQLException e) {
             e.printStackTrace(); // Handle or log the exception
         }
 
-        return students;
+        return teachers;
     }
 
     @Override
-    public List<StudentModel> filterStudentsByUsername(String username) {
-        List<StudentModel> filteredStudents = new ArrayList<>();
+    public List<TeacherModel> filterTeachersByUsername(String username) {
+        List<TeacherModel> filteredTeachers = new ArrayList<>();
 
         try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM student_table WHERE user_id = ?")) {
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM teacher_table WHERE user_id = ?")) {
 
             statement.setString(1, username);
 
-            executeStudentQuery(filteredStudents, statement);
+            executeTeacherQuery(filteredTeachers, statement);
 
         } catch (SQLException e) {
             e.printStackTrace(); // Handle or log the exception
         }
 
-        return filteredStudents;
+        return filteredTeachers;
     }
 
-    private void executeStudentQuery(List<StudentModel> filteredStudents, PreparedStatement statement) throws SQLException {
+    private void executeTeacherQuery(List<TeacherModel> teachers, PreparedStatement statement) throws SQLException {
         try (ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
                 String id = resultSet.getString("id");
@@ -138,8 +138,8 @@ public class StudentDaoImpl implements StudentDao
                 String name = resultSet.getString("name");
                 String password = resultSet.getString("password");
 
-                StudentModel student = new StudentModel(id, userId, name, password);
-                filteredStudents.add(student);
+                TeacherModel teacher = new TeacherModel(id, userId, name, password);
+                teachers.add(teacher);
             }
         }
     }

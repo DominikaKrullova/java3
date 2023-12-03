@@ -1,7 +1,6 @@
 package applicationtier.controller;
 
 import applicationtier.model.ClassModel;
-import applicationtier.model.StudentModel;
 import applicationtier.service.api.ClassService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +21,7 @@ public class ClassDataController
     }
 
     @GetMapping("/Class")
-    public ResponseEntity<List<ClassModel>> fetchClassByClassId (@RequestParam int classId)
+    public ResponseEntity<List<ClassModel>> fetchClassByClassId(@RequestParam int classId)
     {
         try {
             return new ResponseEntity<>(classService.fetchClassByClassId(classId), HttpStatus.OK);
@@ -36,10 +35,7 @@ public class ClassDataController
     public ResponseEntity<ClassModel> storeClassData(@RequestBody ClassModel class_) {
         try {
             return new ResponseEntity<>(classService.storeClassData(class_), HttpStatus.OK);
-        }
-        catch (Exception e)
-
-        {
+        } catch (Exception e) {
             // TODO: error handling could be improved
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
