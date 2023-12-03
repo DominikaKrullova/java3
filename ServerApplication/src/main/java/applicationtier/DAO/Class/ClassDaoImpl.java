@@ -24,7 +24,7 @@ public class ClassDaoImpl implements ClassDao
     private Connection getConnection() throws SQLException
     {
         return DriverManager.getConnection(
-                "jdbc:postgresql://localhost:5432/postgres?currentSchema=Gradingsystem",
+                "jdbc:postgresql://localhost:5432/postgres?currentSchema=GradingSystem",
                 "postgres", "password");
     }
 
